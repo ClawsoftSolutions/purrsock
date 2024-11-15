@@ -1,0 +1,6 @@
+[submodule "deps/purrr"]
+	path = deps/purrr
+	url = https://github.com/ClawsoftSolutions/purrr
+[submodule "deps/cglm"]
+	path = deps/cglm
+	url = https://github.com/recp/cglm/
