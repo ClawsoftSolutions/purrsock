@@ -4,6 +4,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef enum {
   PS_CONNCLOSED = -2,
   PS_ERROR_INTERNAL = -1,
@@ -56,5 +60,9 @@ typedef struct {
 
 ps_result_t ps_read_socket_packet(ps_socket_t socket, ps_packet_t *packet, ps_socket_t *from);
 ps_result_t ps_send_socket_packet(ps_socket_t socket, ps_packet_t packet, ps_socket_t to);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // PURRSOCK_H_
