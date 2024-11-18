@@ -9,7 +9,3 @@ target_include_directories(purrsock PUBLIC include/)
 if(WIN32)
   target_link_libraries(purrsock ws2_32)
 endif()
-
-add_subdirectory(deps/purrr)
-add_subdirectory(deps/cglm)
-add_subdirectory(examples)
