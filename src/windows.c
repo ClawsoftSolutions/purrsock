@@ -1,3 +1,11 @@
+// Copyright (c) 2024 ClawsoftSolutions. All rights reserved.
+//
+// This software is licensed under the MIT License.
+// See LICENSE file for more information.
+//
+
+
+
 #ifdef   _WIN32
 
 #include "internal.h"
@@ -30,24 +38,36 @@ void _purrsock_cleanup() {
   WSACleanup();
 }
 
-ps_result_t _last_ps_result() {
+ps_result_t _last_ps_result(const char *func_name) {
   int error = WSAGetLastError();
+  ps_result_t result = PS_ERROR_UNKNOWN;
+  
   switch (error) {
-  case 0: return PS_SUCCESS;
-
-  case WSANOTINITIALISED: return PS_ERROR_NOTINIT;
-  case WSAEMSGSIZE:       return PS_ERROR_MSGTOOLONG;
-  case WSAEADDRINUSE:     return PS_ERROR_ADDRINUSE;
-  case WSAEADDRNOTAVAIL:  return PS_ERROR_ADDRNOTAVAIL;
-  case WSAENETDOWN:       return PS_ERROR_NETDOWN;
-  case WSAENETRESET:      return PS_ERROR_NETRESET;
-  case WSAECONNRESET:     return PS_ERROR_CONNRESET;
-  case WSAECONNREFUSED:   return PS_ERROR_CONNREFUSED;
-  case WSAEHOSTDOWN:      return PS_ERROR_HOSTDOWN;
-  case WSAESHUTDOWN:      return PS_ERROR_SHUTDOWN;
+    case 0: result = PS_SUCCESS; break;
+    case WSANOTINITIALISED: result = PS_ERROR_NOTINIT; break;
+    case WSAEMSGSIZE: result = PS_ERROR_MSGTOOLONG; break;
+    case WSAEADDRINUSE: result = PS_ERROR_ADDRINUSE; break;
+    case WSAEADDRNOTAVAIL: result = PS_ERROR_ADDRNOTAVAIL; break;
+    case WSAENETDOWN: result = PS_ERROR_NETDOWN; break;
+    case WSAENETRESET: result = PS_ERROR_NETRESET; break;
+    case WSAECONNRESET: result = PS_ERROR_CONNRESET; break;
+    case WSAECONNREFUSED: result = PS_ERROR_CONNREFUSED; break;
+    case WSAEHOSTDOWN: result = PS_ERROR_HOSTDOWN; break;
+    case WSAESHUTDOWN: result = PS_ERROR_SHUTDOWN; break;
+    case WSAETIMEDOUT: result = PS_ERROR_TIMEOUT; break;
+    
+    default:
+      result = PS_ERROR_UNKNOWN;
+      log_error("Error in function %s: Unknown error. WSA Error Code: %d\n", func_name, error);
+      return result;
   }
-  return PS_ERROR_UNKNOWN;
+
+  log_error("Error in function %s: %s\n", func_name, ps_result_to_cstr(result));
+  
+  return result;
 }
+
+
 
 typedef struct {
   SOCKET socket;
@@ -76,7 +96,7 @@ ps_result_t _purrsock_create_socket(_purrsock_socket_t *in_socket) {
   }
 
   if (data->socket == INVALID_SOCKET)
-    result = _last_ps_result();
+    result = _last_ps_result("purrsock_create_socket");
 
   in_socket->data = data;
 
@@ -121,7 +141,7 @@ ps_result_t _purrsock_bind_socket(_purrsock_socket_t *socket, const char *ip, ps
   addr.sin_addr.s_addr = ip?inet_addr(ip):INADDR_ANY;
   addr.sin_port = htons(port);
 
-  if (bind(data->socket, (struct sockaddr*)&addr, sizeof(addr)) == SOCKET_ERROR) return _last_ps_result();
+  if (bind(data->socket, (struct sockaddr*)&addr, sizeof(addr)) == SOCKET_ERROR) return _last_ps_result("purrsock_create_socket_from_addr");
   return PS_SUCCESS;
 }
 
@@ -131,7 +151,7 @@ ps_result_t _purrsock_listen_socket(_purrsock_socket_t *socket) {
   _purrsock_socket_data_t *data = (_purrsock_socket_data_t*)socket->data;
   if (!data) return PS_ERROR_NOTINIT;
 
-  if (listen(data->socket, SOMAXCONN) == SOCKET_ERROR) return _last_ps_result();
+  if (listen(data->socket, SOMAXCONN) == SOCKET_ERROR) return _last_ps_result("purrsock_listen_socket");
 
   return PS_SUCCESS;
 }
@@ -144,7 +164,7 @@ ps_result_t _purrsock_accept_socket(_purrsock_socket_t *socket, _purrsock_socket
   struct sockaddr_in addr = {0};
   int addr_size = sizeof(addr);
   SOCKET sock = accept(data->socket, (struct sockaddr*)&addr, &addr_size);
-  if (sock == INVALID_SOCKET) return _last_ps_result();
+  if (sock == INVALID_SOCKET) return _last_ps_result("purrsock_accept_socket");
 
   *client = (_purrsock_socket_t*)malloc(sizeof(**client));
   assert(*client);
@@ -169,7 +189,7 @@ ps_result_t _purrsock_connect_socket(_purrsock_socket_t *socket, const char *ip,
   addr.sin_addr.s_addr = ip?inet_addr(ip):INADDR_ANY;
   addr.sin_port = htons(port);
 
-  if (connect(data->socket, (struct sockaddr*)&addr, sizeof(addr)) != 0) return _last_ps_result();
+  if (connect(data->socket, (struct sockaddr*)&addr, sizeof(addr)) != 0) return _last_ps_result("purrsock_connect_socket");
 
   return PS_SUCCESS;
 }
@@ -202,7 +222,7 @@ ps_result_t _purrsock_read_socket_packet(_purrsock_socket_t *socket, ps_packet_t
   }
   }
 
-  if (res < 0) return _last_ps_result();
+  if (res < 0) return _last_ps_result("purrsock_read_socket_packet");
   else if (res == 0) return PS_CONNCLOSED;
   packet->size = (size_t)res;
   return PS_SUCCESS;
@@ -237,7 +257,7 @@ ps_result_t _purrsock_send_socket_packet(_purrsock_socket_t *socket, ps_packet_t
     ptr += res;
   }
 
-  if (res == SOCKET_ERROR) return _last_ps_result();
+  if (res == SOCKET_ERROR) return _last_ps_result("purrsock_send_socket_packet");
   return PS_SUCCESS;
 }
 

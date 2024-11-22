@@ -1,3 +1,11 @@
+// Copyright (c) 2024 ClawsoftSolutions. All rights reserved.
+//
+// This software is licensed under the MIT License.
+// See LICENSE file for more information.
+//
+
+
+
 #ifndef   INTERNAL_H
 #define   INTERNAL_H
 
