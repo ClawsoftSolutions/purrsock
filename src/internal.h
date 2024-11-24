@@ -11,12 +11,22 @@
 
 #include "purrsock/purrsock.h"
 
+#ifdef _WIN32
+#include <winsock2.h>
+#else
+#include <sys/socket.h>
+#endif
+
 typedef struct {
   ps_protocol_t protocol;
   void *data;
+  struct sockaddr_storage addr_storage;
 } _purrsock_socket_t;
 
 // Definitions
+
+const char* get_platform();
+void logWSAError(int error);
 
 bool _purrsock_init();
 void _purrsock_cleanup();

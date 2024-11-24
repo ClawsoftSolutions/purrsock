@@ -32,6 +32,16 @@ const char *ps_result_to_cstr(ps_result_t result) {
   return NULL;
 }
 
+const char* get_platform() {
+  #ifdef PLATFORM_WINDOWS
+      return "Windows";
+  #elif defined(PLATFORM_LINUX)
+      return "Linux";
+  #else
+      return "Unknown";
+  #endif
+}
+
 bool ps_init() {
   return _purrsock_init();
 }

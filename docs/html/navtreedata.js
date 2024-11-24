@@ -25,6 +25,22 @@
 var NAVTREE =
 [
   [ "Purrsock", "index.html", [
+    [ "Purrsock: A Lightweight Networking Library", "index.html", "index" ],
+    [ "TODO and Ideas for Purrsock", "md_docs_2md_2_t_o_d_o.html", [
+      [ "Enhanced Error Handling", "md_docs_2md_2_t_o_d_o.html#autotoc_md7", null ],
+      [ "Serialization and Deserialization", "md_docs_2md_2_t_o_d_o.html#autotoc_md8", null ],
+      [ "Asynchronous and Non-blocking Operations", "md_docs_2md_2_t_o_d_o.html#autotoc_md9", null ],
+      [ "Advanced Protocols", "md_docs_2md_2_t_o_d_o.html#autotoc_md10", null ],
+      [ "Utility Features", "md_docs_2md_2_t_o_d_o.html#autotoc_md11", null ],
+      [ "Performance Enhancements", "md_docs_2md_2_t_o_d_o.html#autotoc_md12", null ],
+      [ "Security Features", "md_docs_2md_2_t_o_d_o.html#autotoc_md13", null ],
+      [ "Debugging and Diagnostics", "md_docs_2md_2_t_o_d_o.html#autotoc_md14", null ],
+      [ "Cross-platform Enhancements", "md_docs_2md_2_t_o_d_o.html#autotoc_md15", null ],
+      [ "High-level Abstractions", "md_docs_2md_2_t_o_d_o.html#autotoc_md16", null ],
+      [ "Extensibility and Modularity", "md_docs_2md_2_t_o_d_o.html#autotoc_md17", null ],
+      [ "Testing and Examples", "md_docs_2md_2_t_o_d_o.html#autotoc_md18", null ],
+      [ "Configuration and Ease of Use", "md_docs_2md_2_t_o_d_o.html#autotoc_md19", null ]
+    ] ],
     [ "Data Structures", "annotated.html", [
       [ "Data Structures", "annotated.html", "annotated_dup" ],
       [ "Data Structure Index", "classes.html", null ],

@@ -31,6 +31,14 @@ typedef enum {
   PS_ERROR_SHUTDOWN,           /**< Socket was shut down. */
   PS_ERROR_TIMEOUT,            /**< Timeout occurred. */
 
+  /* IPv6 Specific Errors */
+  PS_ERROR_IPV6_ADDR_PARSE,    /**< Error parsing IPv6 address. */
+  PS_ERROR_IPV6_ADDR_INVALID,  /**< Invalid IPv6 address. */
+  PS_ERROR_IPV6_CONNECT_FAILED,/**< Failed to connect via IPv6. */
+  PS_ERROR_IPV6_SOCKET_CREATION, /**< Error creating IPv6 socket. */
+  PS_ERROR_IPV6_SOCKET_BINDING,  /**< Error binding IPv6 socket. */
+  PS_ERROR_IPV6_SOCKET_CLOSED,   /**< IPv6 socket was closed unexpectedly. */
+  
   PS_ERROR_UNKNOWN             /**< Unknown error code. */
 } ps_result_t;
 
