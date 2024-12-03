@@ -30,6 +30,7 @@ typedef enum {
   PS_ERROR_HOSTDOWN,           /**< Host is down. */
   PS_ERROR_SHUTDOWN,           /**< Socket was shut down. */
   PS_ERROR_TIMEOUT,            /**< Timeout occurred. */
+  PS_ERROR_INVALID_ARGUMENT,    /**< Invaild argument detected. */
 
   /* IPv6 Specific Errors */
   PS_ERROR_IPV6_ADDR_PARSE,    /**< Error parsing IPv6 address. */
@@ -59,6 +60,13 @@ typedef enum {
 
   COUNT_PS_PROTOCOLS          /**< Count of protocols. */
 } ps_protocol_t;
+
+typedef enum {
+  PS_ADDRESS_IPV4 = 0,
+  PS_ADDRESS_IPV6,
+
+  COUNT_PS_ADDRESS
+} ps_address_t; 
 
 /**
  * @brief Type definition for a port number.
@@ -95,7 +103,7 @@ typedef struct ps_socket_s *ps_socket_t;
  * @param protocol The protocol to use for the socket (TCP or UDP).
  * @return A `ps_result_t` result code indicating the success or failure of the operation.
  */
-ps_result_t ps_create_socket(ps_socket_t *socket, ps_protocol_t protocol);
+ps_result_t ps_create_socket(ps_socket_t *socket, ps_protocol_t protocol, ps_address_t address);
 
 /**
  * @brief Creates a socket from an address and port.

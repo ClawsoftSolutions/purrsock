@@ -27,6 +27,7 @@ const char *ps_result_to_cstr(ps_result_t result) {
   case PS_ERROR_HOSTDOWN:     return "Error host down";
   case PS_ERROR_SHUTDOWN:     return "Error shut down";
   case PS_ERROR_UNKNOWN:      return "Unknown error";
+
   }
   assert(0 && "Unreachable");
   return NULL;
@@ -50,21 +51,23 @@ void ps_cleanup() {
   _purrsock_cleanup();
 }
 
-ps_result_t ps_create_socket(ps_socket_t *socket, ps_protocol_t protocol) {
+ps_result_t ps_create_socket(ps_socket_t *socket, ps_protocol_t protocol, ps_address_t address) {
   assert(socket);
   _purrsock_socket_t *internal_socket = (_purrsock_socket_t*)malloc(sizeof(*internal_socket));
   assert(internal_socket);
   internal_socket->protocol = protocol;
+  internal_socket->addr_storage.ss_family = address;
   *socket = (ps_socket_t)internal_socket;
 
   return _purrsock_create_socket(internal_socket);
 }
 
-ps_result_t ps_create_socket_from_addr(ps_socket_t *socket, ps_protocol_t protocol, const char *ip, ps_port_t port) {
+ps_result_t ps_create_socket_from_addr(ps_socket_t *socket, ps_protocol_t protocol, ps_address_t address, const char *ip, ps_port_t port) {
   assert(socket);
   _purrsock_socket_t *internal_socket = (_purrsock_socket_t*)malloc(sizeof(*internal_socket));
   assert(internal_socket);
   internal_socket->protocol = protocol;
+  internal_socket->addr_storage.ss_family = address;
   *socket = (ps_socket_t)internal_socket;
 
   return _purrsock_create_socket_from_addr(internal_socket, ip, port);
